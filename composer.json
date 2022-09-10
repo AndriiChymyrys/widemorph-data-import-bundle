@@ -1,0 +1,11 @@
+{
+    "name": "widemorph/morph-data-import-bundle",
+    "autoload": {
+        "psr-4": {
+            "WideMorph\\Morph\\Bundle\\MorphDataImportBundle\\": ""
+        }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.24"
+    }
+}

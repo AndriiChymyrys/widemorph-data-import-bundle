@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionService">
+            <argument type="service"
+                      key="$entityFileManager"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFileManagerInterface"/>
+            <argument type="service"
+                      key="$entityFactory"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFactoryInterface"/>
+            <argument type="service"
+                      key="$entityFieldFactory"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface"/>
+            <argument key="$excludedEntity"/>
+            <argument key="$includeEntity"/>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionServiceInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFileManager">
+            <argument key="$projectDir">%kernel.project_dir%</argument>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFileManagerInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFileManager"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFactory">
+            <argument key="$entitiesConfig"/>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFactoryInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFactory"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactory">
+            <argument key="$annotationReader" type="service" id="annotations.reader"/>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactory"/>
+    </services>
+</container>
