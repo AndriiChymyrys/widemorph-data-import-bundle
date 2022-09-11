@@ -5,14 +5,27 @@ declare(strict_types=1);
 namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection;
 
 use ReflectionClass;
+use App\Entity\ImportPlan;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\EntityReflectionInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface;
-use App\Entity\ImportPlan;
 
+/**
+ * Class EntityReflectionService
+ *
+ * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection
+ */
 class EntityReflectionService implements EntityReflectionServiceInterface
 {
+    /** @var string[] */
     private const DEFAULT_EXCLUDE_ENTITY = [ImportPlan::class];
 
+    /**
+     * @param EntityFileManagerInterface $entityFileManager
+     * @param EntityFactoryInterface $entityFactory
+     * @param EntityFieldFactoryInterface $entityFieldFactory
+     * @param array $excludedEntity
+     * @param array $includeEntity
+     */
     public function __construct(
         protected readonly EntityFileManagerInterface $entityFileManager,
         protected readonly EntityFactoryInterface $entityFactory,
@@ -22,6 +35,9 @@ class EntityReflectionService implements EntityReflectionServiceInterface
     ) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEntitiesList(): array
     {
         $entities = $this->entityFileManager->scanEntityFolder();
@@ -34,6 +50,9 @@ class EntityReflectionService implements EntityReflectionServiceInterface
         return $this->filterEntities($result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEntityReflection(string $entityName): EntityReflectionInterface
     {
         $namespace = $this->entityFileManager->getEntityNameSpace($entityName);
@@ -50,6 +69,9 @@ class EntityReflectionService implements EntityReflectionServiceInterface
         return $entityReflection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEntitiesReflection(array $entities): EntityCollectionInterface
     {
         $entityCollection = $this->entityFactory->getEntityCollection();
@@ -61,6 +83,11 @@ class EntityReflectionService implements EntityReflectionServiceInterface
         return $entityCollection;
     }
 
+    /**
+     * @param array $entities
+     *
+     * @return array
+     */
     protected function filterEntities(array $entities): array
     {
         $finalEntityList = $entities;

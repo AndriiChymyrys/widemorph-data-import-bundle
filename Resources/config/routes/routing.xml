@@ -14,4 +14,8 @@
            controller="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\IndexController::entityImport">
     </route>
 
+    <route id="morph_data_import" path="/import/data" methods="POST"
+           controller="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\ImportController::import">
+    </route>
+
 </routes>

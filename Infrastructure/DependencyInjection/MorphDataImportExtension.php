@@ -28,11 +28,21 @@ class MorphDataImportExtension extends Extension
             new FileLocator(__DIR__.'/../../Resources/config')
         );
 
-        $loader->load('domain.xml');
-        $loader->load('interaction.xml');
-        $loader->load('presentation.xml');
-        $loader->load('infrastructure.xml');
+        foreach (['domain.xml', 'interaction.xml', 'presentation.xml', 'infrastructure.xml'] as $file) {
+            $loader->load($file);
+        }
 
+        $this->handleConfiguration($configs, $container);
+    }
+
+    /**
+     * @param array $configs
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
+    protected function handleConfiguration(array $configs, ContainerBuilder $container): void
+    {
         $configuration = new Configuration();
 
         $config = $this->processConfiguration($configuration, $configs);

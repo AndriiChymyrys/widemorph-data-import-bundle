@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity;
 
+use JsonSerializable;
 use Doctrine\ORM\Mapping\OneToMany;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityReflectionFieldInterface;
 
@@ -12,7 +13,7 @@ use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\
  *
  * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity
  */
-class EntityReflection implements EntityReflectionInterface
+class EntityReflection implements EntityReflectionInterface, JsonSerializable
 {
     /** @var string[] */
     protected const DEFAULT_EXCLUDE_PROPERTIES = ['id'];
@@ -69,6 +70,17 @@ class EntityReflection implements EntityReflectionInterface
     public function getNamespace(): string
     {
         return $this->namespace;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'namespace' => $this->getNamespace(),
+            'fields' => $this->getUiFields(),
+        ];
     }
 
     /**
