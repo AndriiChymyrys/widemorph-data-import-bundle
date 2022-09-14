@@ -10,5 +10,9 @@
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\IndexController">
             <tag name="controller.service_arguments"/>
         </service>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\Api\ImportController">
+            <tag name="controller.service_arguments"/>
+        </service>
     </services>
 </container>

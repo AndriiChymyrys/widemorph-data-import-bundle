@@ -2,13 +2,14 @@ const DataImport = {
     namespaced: true,
     state: () => ({
         dataImport: {
-            file: null, fields: {}
+            file: null, entity: {fields: {}, namespace: null}
         },
     }),
     mutations: {
-        ADD_FIELD: (state, field) => state.dataImport.fields[field] = null,
-        UPDATE_FIELD_VALUE: (state, {field, value}) => state.dataImport.fields[field] = value,
+        ADD_FIELD: (state, field) => state.dataImport.entity.fields[field] = null,
+        UPDATE_FIELD_VALUE: (state, {field, value}) => state.dataImport.entity.fields[field] = value,
         ADD_FILE: (state, file) => state.dataImport.file = file,
+        SET_NAMESPACE: (state, namespace) => state.dataImport.entity.namespace = namespace,
     },
     getters: {
         getDataImport(state) {
@@ -24,6 +25,9 @@ const DataImport = {
         },
         addFile({commit}, file) {
             commit('ADD_FILE', file)
+        },
+        setNamespace({commit}, namespace) {
+            commit('SET_NAMESPACE', namespace)
         }
     }
 }

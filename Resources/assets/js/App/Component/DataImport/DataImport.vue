@@ -33,7 +33,7 @@
                     <file-input/>
                 </div>
                 <div class="col-6 text-right">
-                    <import-buttons/>
+                    <import-buttons :import-url="importUrl"/>
                 </div>
             </div>
         </div>
@@ -47,11 +47,12 @@ import ManytooneMapping from "./FieldView/ManytooneMapping";
 import ManytooneDescription from "./FieldView/ManytooneDescription";
 import FileInput from "./FieldView/FileInput";
 import ImportButtons from "./FieldView/ImportButtons";
+import {mapActions} from 'vuex'
 
 const DEFAULT_FIELD_VIEW_TYPE = 'text';
 
 export default {
-    props: ['entityReflection'],
+    props: ['entityReflection', 'importUrl'],
     name: 'DataImport',
     components: {
         FileInput,
@@ -75,6 +76,9 @@ export default {
             }
         };
     },
+    mounted() {
+        this.setNamespace(this.entityReflection.namespace);
+    },
     methods: {
         getComponent(viewType, type) {
             if (viewType in this.componentMapping) {
@@ -89,7 +93,8 @@ export default {
             }
 
             return {'namespace': this.entityReflection.namespace, 'fieldName': field.name}
-        }
+        },
+        ...mapActions('dataImport', ['setNamespace'])
     }
 }
 </script>

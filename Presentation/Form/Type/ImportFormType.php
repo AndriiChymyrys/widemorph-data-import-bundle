@@ -6,10 +6,10 @@ namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportFormDto;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportForm\ImportFormDto;
 
 /**
  * Class ImportFormType
@@ -25,7 +25,9 @@ class ImportFormType extends AbstractType
     {
         $builder
             ->add('file', FileType::class)
-            ->add('entity', CollectionType::class);
+            ->add(
+                'entity', EntityImportFormType::class, ['constraints' => new NotBlank()]
+            );
     }
 
     /**
@@ -35,6 +37,7 @@ class ImportFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ImportFormDto::class,
+            'csrf_protection' => false,
         ]);
     }
 }

@@ -12,5 +12,13 @@
         </service>
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteractionInterface"
                  alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteraction"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\MorphCoreInteraction">
+            <argument type="service"
+                      key="$domainInteraction"
+                      id="WideMorph\Morph\Bundle\MorphCoreBundle\Interaction\DomainInteractionInterface"/>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\MorphCoreInteractionInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\MorphCoreInteraction"/>
     </services>
 </container>

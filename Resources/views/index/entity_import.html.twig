@@ -3,7 +3,7 @@
 {% block page_content %}
     <div class="row">
         <div class="col-12">
-            <data-import :entity-reflection="{{ entityReflection | json_encode }}" />
+            <data-import :entity-reflection="{{ entityReflection | json_encode }}" import-url="{{ path('morph_data_import_api_morph_data_import') }}" />
         </div>
     </div>
 {% endblock page_content %}
