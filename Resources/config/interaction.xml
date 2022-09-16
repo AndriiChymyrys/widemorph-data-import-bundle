@@ -9,6 +9,9 @@
             <argument type="service"
                       key="$entityReflectionService"
                       id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionServiceInterface"/>
+            <argument type="service"
+                      key="$importTypeFactory"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactoryInterface"/>
         </service>
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteractionInterface"
                  alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteraction"/>

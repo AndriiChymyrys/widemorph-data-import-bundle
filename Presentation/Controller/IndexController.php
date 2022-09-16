@@ -18,14 +18,6 @@ class IndexController extends AbstractController
         );
     }
 
-    public function createCreateImportPlan(DomainInteractionInterface $domainInteraction, string $entityName): Response
-    {
-        return $this->render(
-            '@MorphDataImport/index/create_import_plan.html.twig',
-            ['entityReflection' => $domainInteraction->getEntityReflectionService()->getEntityReflection($entityName)]
-        );
-    }
-
     public function entityImport(DomainInteractionInterface $domainInteraction, string $entityName): Response
     {
         return $this->render(

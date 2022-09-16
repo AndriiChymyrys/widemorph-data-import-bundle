@@ -20,10 +20,11 @@ interface EntityReflectionServiceInterface
 
     /**
      * @param string $entityName
+     * @param bool $isNamespace
      *
      * @return EntityReflectionInterface
      */
-    public function getEntityReflection(string $entityName): EntityReflectionInterface;
+    public function getEntityReflection(string $entityName, bool $isNamespace = false): EntityReflectionInterface;
 
     /**
      * @param array $entities

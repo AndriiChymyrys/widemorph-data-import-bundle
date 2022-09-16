@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportForm\ImportFormDto;
 
 /**
@@ -24,10 +25,9 @@ class ImportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file', FileType::class)
-            ->add(
-                'entity', EntityImportFormType::class, ['constraints' => new NotBlank()]
-            );
+            ->add('file', FileType::class, ['constraints' => new NotBlank()])
+            ->add('apiUrl', TextType::class)
+            ->add('entity', EntityImportFormType::class, ['constraints' => new NotBlank()]);
     }
 
     /**

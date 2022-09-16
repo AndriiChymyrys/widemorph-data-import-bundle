@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Infrastructure\DependencyInjection\MorphDataImportExtension;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Infrastructure\DependencyInjection\Compiler\SideBarLinkCompilerPass;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Infrastructure\DependencyInjection\Compiler\ImportReaderCompilerPass;
 
 /**
  * Class MorphDataImportBundle
@@ -23,6 +24,7 @@ class MorphDataImportBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new SideBarLinkCompilerPass());
+        $container->addCompilerPass(new ImportReaderCompilerPass());
     }
 
     /**

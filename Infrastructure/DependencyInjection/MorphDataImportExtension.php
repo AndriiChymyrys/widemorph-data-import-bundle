@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityFactory;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionService;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\SourceReaderInterface;
 
 /**
  * Class MorphDataImportExtension
@@ -25,7 +26,7 @@ class MorphDataImportExtension extends Extension
     {
         $loader = new XmlFileLoader(
             $container,
-            new FileLocator(__DIR__.'/../../Resources/config')
+            new FileLocator(__DIR__ . '/../../Resources/config')
         );
 
         foreach (['domain.xml', 'interaction.xml', 'presentation.xml', 'infrastructure.xml'] as $file) {
@@ -33,6 +34,9 @@ class MorphDataImportExtension extends Extension
         }
 
         $this->handleConfiguration($configs, $container);
+
+        $container->registerForAutoconfiguration(SourceReaderInterface::class)
+            ->addTag(SourceReaderInterface::SERVICE_TAG_NAME);
     }
 
     /**
@@ -52,6 +56,14 @@ class MorphDataImportExtension extends Extension
         $definition->replaceArgument('$includeEntity', $config['include_entity']);
 
         $definition = $container->getDefinition(EntityFactory::class);
-        $definition->replaceArgument('$entitiesConfig', $config['entities']);
+
+        $entitiesConfig = [];
+
+        foreach ($config['entities'] as $key => $entity) {
+            $entity['handler'] = $container->getDefinition($entity['handler']);
+            $entitiesConfig[$key] = $entity;
+        }
+
+        $definition->replaceArgument('$entitiesConfig', $entitiesConfig);
     }
 }

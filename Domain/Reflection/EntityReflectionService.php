@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection;
 
 use ReflectionClass;
-use App\Entity\ImportPlan;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\EntityReflectionInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface;
 
@@ -16,9 +15,6 @@ use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\
  */
 class EntityReflectionService implements EntityReflectionServiceInterface
 {
-    /** @var string[] */
-    private const DEFAULT_EXCLUDE_ENTITY = [ImportPlan::class];
-
     /**
      * @param EntityFileManagerInterface $entityFileManager
      * @param EntityFactoryInterface $entityFactory
@@ -53,9 +49,9 @@ class EntityReflectionService implements EntityReflectionServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function getEntityReflection(string $entityName): EntityReflectionInterface
+    public function getEntityReflection(string $entityName, bool $isNamespace = false): EntityReflectionInterface
     {
-        $namespace = $this->entityFileManager->getEntityNameSpace($entityName);
+        $namespace = $isNamespace ? $entityName : $this->entityFileManager->getEntityNameSpace($entityName);
 
         $reflection = new ReflectionClass($namespace);
 
@@ -96,8 +92,6 @@ class EntityReflectionService implements EntityReflectionServiceInterface
             $finalEntityList = array_intersect_key($entities, array_flip($this->includeEntity));
         }
 
-        $exclude = array_merge($this->excludedEntity, static::DEFAULT_EXCLUDE_ENTITY);
-
-        return array_diff_key($finalEntityList, array_flip($exclude));
+        return array_diff_key($finalEntityList, array_flip($this->excludedEntity));
     }
 }

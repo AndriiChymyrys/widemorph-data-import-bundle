@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity;
 
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\ImportHandlerInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityReflectionFieldInterface;
 
 /**
@@ -34,4 +35,9 @@ interface EntityReflectionInterface
      * @return EntityReflectionFieldInterface[]
      */
     public function getUiFields(): array;
+
+    /**
+     * @return ImportHandlerInterface|null
+     */
+    public function getImportHandler(): ?ImportHandlerInterface;
 }

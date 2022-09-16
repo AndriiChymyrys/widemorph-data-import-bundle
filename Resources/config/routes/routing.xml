@@ -7,9 +7,6 @@
     <route id="morph_data_import_entities_list" path="/" methods="GET"
            controller="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\IndexController::entitiesList">
     </route>
-    <route id="morph_data_import_create_import_plan" path="/{entityName}/create-import-plan" methods="GET"
-           controller="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\IndexController::createCreateImportPlan">
-    </route>
     <route id="morph_data_import_entity_import" path="/{entityName}/import" methods="GET"
            controller="WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Controller\IndexController::entityImport">
     </route>

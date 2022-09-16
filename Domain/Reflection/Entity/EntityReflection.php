@@ -6,6 +6,7 @@ namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity;
 
 use JsonSerializable;
 use Doctrine\ORM\Mapping\OneToMany;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\ImportHandlerInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityReflectionFieldInterface;
 
 /**
@@ -81,6 +82,14 @@ class EntityReflection implements EntityReflectionInterface, JsonSerializable
             'namespace' => $this->getNamespace(),
             'fields' => $this->getUiFields(),
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getImportHandler(): ?ImportHandlerInterface
+    {
+        return $this->config['handler'] ?? null;
     }
 
     /**

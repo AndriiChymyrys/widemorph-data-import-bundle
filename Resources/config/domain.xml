@@ -36,7 +36,50 @@
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactory">
             <argument key="$annotationReader" type="service" id="annotations.reader"/>
         </service>
-        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface"
-                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactory"/>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactoryInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Field\EntityFieldFactory"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\AbstractImportService">
+            <argument key="$entityReflectionService" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionServiceInterface"/>
+            <argument key="$readerFactory" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ReaderFactoryInterface"/>
+            <argument key="$importHandler" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerServiceInterface"/>
+        </service>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\FileImportService"
+                 parent="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\AbstractImportService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\ApiImportService"
+                 parent="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\AbstractImportService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactory">
+            <argument key="$importTypes" type="collection">
+                <argument key="file" type="service"
+                          id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\FileImportService"/>
+                <argument key="api" type="service"
+                          id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\ApiImportService"/>
+            </argument>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactoryInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactory"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ReaderFactory">
+            <argument key="$readers" type="collection"/>
+        </service>
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ReaderFactoryInterface"
+                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ReaderFactory"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ExcelSourceReader"
+                 autoconfigure="true">
+        </service>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerService">
+        </service>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerServiceInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerService"/>
     </services>
 </container>
