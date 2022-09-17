@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Exception\ImportReaderException;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\EntityReflectionInterface;
 
+/**
+ * Class ReaderFactory
+ *
+ * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader
+ */
 class ReaderFactory implements ReaderFactoryInterface
 {
     /**
@@ -17,6 +22,9 @@ class ReaderFactory implements ReaderFactoryInterface
     {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getReader(
         array|UploadedFile $source,
         EntityReflectionInterface $entityReflection

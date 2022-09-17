@@ -22,11 +22,12 @@ class FileImportService extends AbstractImportService
 
         $data = $reader->readSource(
             $entityDto->getFile(),
-            $entityReflection
+            $entityDto,
+            $entityReflection,
         );
 
         $handler = $entityReflection->getImportHandler() ?? $this->importHandler;
 
-        $handler->handle($data);
+        $handler->handle($data, $entityDto, $entityReflection);
     }
 }
