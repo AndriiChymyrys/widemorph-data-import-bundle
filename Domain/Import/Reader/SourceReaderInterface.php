@@ -39,4 +39,9 @@ interface SourceReaderInterface
      * @return bool
      */
     public function support(array|UploadedFile $source, EntityReflectionInterface $entityReflection): bool;
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int;
 }

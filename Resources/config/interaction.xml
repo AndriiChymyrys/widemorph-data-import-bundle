@@ -12,6 +12,9 @@
             <argument type="service"
                       key="$importTypeFactory"
                       id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactoryInterface"/>
+            <argument type="service"
+                      key="$importErrorCollection"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollectionInterface"/>
         </service>
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteractionInterface"
                  alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction\DomainInteraction"/>

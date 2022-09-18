@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Interaction;
 
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportTypeFactoryInterface;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollectionInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\EntityReflectionServiceInterface;
 
 /**
@@ -23,4 +24,9 @@ interface DomainInteractionInterface
      * @return ImportTypeFactoryInterface
      */
     public function getImportTypeFactory(): ImportTypeFactoryInterface;
+
+    /**
+     * @return ImportErrorCollectionInterface
+     */
+    public function getImportErrorCollection(): ImportErrorCollectionInterface;
 }

@@ -47,6 +47,8 @@
                       id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\ReaderFactoryInterface"/>
             <argument key="$importHandler" type="service"
                       id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerServiceInterface"/>
+            <argument key="$importErrorCollection" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollectionInterface"/>
         </service>
 
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type\FileImportService"
@@ -83,5 +85,11 @@
         <service
                 id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerServiceInterface"
                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollection" shared="true">
+        </service>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollectionInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollection"/>
     </services>
 </container>

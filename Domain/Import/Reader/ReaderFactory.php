@@ -29,6 +29,8 @@ class ReaderFactory implements ReaderFactoryInterface
         array|UploadedFile $source,
         EntityReflectionInterface $entityReflection
     ): SourceReaderInterface {
+        $this->sort();
+
         foreach ($this->readers as $reader) {
             if ($reader->support($source, $entityReflection)) {
                 return $reader;
@@ -36,5 +38,19 @@ class ReaderFactory implements ReaderFactoryInterface
         }
 
         throw new ImportReaderException('Reader for source no found');
+    }
+
+    /**
+     * @return void
+     */
+    protected function sort(): void
+    {
+        uasort($this->readers, static function (SourceReaderInterface $a, SourceReaderInterface $b) {
+            if ($a->getPriority() === $b->getPriority()) {
+                return 0;
+            }
+
+            return ($a->getPriority() < $b->getPriority()) ? -1 : 1;
+        });
     }
 }

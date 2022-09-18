@@ -12,6 +12,9 @@ use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Entity
 
 class SimpleImportHandlerService implements ImportHandlerInterface
 {
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(protected EntityManagerInterface $entityManager)
     {
     }
@@ -35,11 +38,24 @@ class SimpleImportHandlerService implements ImportHandlerInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param string $namespace
+     *
+     * @return object
+     */
     protected function getEntity(string $namespace): object
     {
         return new $namespace();
     }
 
+    /**
+     * @param string $fieldName
+     * @param object $entity
+     *
+     * @return string
+     *
+     * @throws ImportHandlerException
+     */
     protected function getSetMethod(string $fieldName, object $entity): string
     {
         $method = 'set' . ucfirst($fieldName);
