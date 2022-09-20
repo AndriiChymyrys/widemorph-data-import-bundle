@@ -21,15 +21,13 @@ interface EntityReflectionServiceInterface
     /**
      * @param string $entityName
      * @param bool $isNamespace
+     * @param EntityReflectionInterface|null $parentEntityReflection
      *
      * @return EntityReflectionInterface
      */
-    public function getEntityReflection(string $entityName, bool $isNamespace = false): EntityReflectionInterface;
-
-    /**
-     * @param array $entities
-     *
-     * @return EntityCollectionInterface
-     */
-    public function getEntitiesReflection(array $entities): EntityCollectionInterface;
+    public function getEntityReflection(
+        string $entityName,
+        bool $isNamespace = false,
+        EntityReflectionInterface $parentEntityReflection = null
+    ): EntityReflectionInterface;
 }

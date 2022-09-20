@@ -16,7 +16,7 @@
 <script>
 export default {
     props: ['field'],
-    name: "TextDescription"
+    name: "Description"
 }
 </script>
 

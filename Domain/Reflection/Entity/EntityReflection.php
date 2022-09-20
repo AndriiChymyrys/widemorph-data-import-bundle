@@ -19,11 +19,8 @@ class EntityReflection implements EntityReflectionInterface, JsonSerializable
     /** @var string[] */
     protected const DEFAULT_EXCLUDE_PROPERTIES = ['id'];
 
-    /** @var string[] */
-    protected const ANNOTATIONS_TO_EXCLUDE = [OneToMany::class];
-
     /**
-     * @var array
+     * @var array<string, EntityReflectionFieldInterface|EntityReflectionInterface>
      */
     protected array $fields;
 
@@ -38,9 +35,15 @@ class EntityReflection implements EntityReflectionInterface, JsonSerializable
     /**
      * {@inheritDoc}
      */
-    public function addField(EntityReflectionFieldInterface $field): void
-    {
-        $this->fields[$field->getName()] = $field;
+    public function addField(
+        EntityReflectionFieldInterface $field,
+        EntityReflectionInterface $entityReflection = null
+    ): void {
+        if ($entityReflection && $field->isRelation()) {
+            $this->fields[$field->getName()] = $entityReflection;
+        } else {
+            $this->fields[$field->getName()] = $field;
+        }
     }
 
     /**
@@ -62,7 +65,7 @@ class EntityReflection implements EntityReflectionInterface, JsonSerializable
             $excludeProperties = array_merge($excludeProperties, $this->config['exclude_properties']);
         }
 
-        return $this->excludeByAnnotation(array_diff_key($this->fields, array_flip($excludeProperties)));
+        return array_diff_key($this->fields, array_flip($excludeProperties));
     }
 
     /**
@@ -90,27 +93,5 @@ class EntityReflection implements EntityReflectionInterface, JsonSerializable
     public function getImportHandler(): ?ImportHandlerInterface
     {
         return $this->config['handler'] ?? null;
-    }
-
-    /**
-     * @param EntityReflectionFieldInterface[] $fields
-     *
-     * @return array
-     */
-    protected function excludeByAnnotation(array $fields): array
-    {
-        $filtered = [];
-
-        foreach ($fields as $field) {
-            if ($field->getFieldAnnotation() && !in_array(
-                    $field->getFieldAnnotation()::class,
-                    static::ANNOTATIONS_TO_EXCLUDE,
-                    true
-                )) {
-                $filtered[] = $field;
-            }
-        }
-
-        return $filtered;
     }
 }

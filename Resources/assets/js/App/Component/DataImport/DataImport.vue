@@ -4,29 +4,11 @@
             <h3 class="card-title">Import Data For Entity <b>{{ entityReflection.namespace }}</b></h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
-                <thead>
-                <tr>
-                    <th>Entity Field Name</th>
-                    <th>Field Description</th>
-                    <th>Mapping</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="field in entityReflection.fields">
-                    <td>{{ field.name }}</td>
-                    <td>
-                        <component :is="getComponent(field.viewType, 'desc')"
-                                   v-bind="getComponentProperties('desc', field)"></component>
-                    </td>
-                    <td>
-                        <component :is="getComponent(field.viewType, 'mapp')"
-                                   v-bind="getComponentProperties('mapp', field)"></component>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <EntityField :entityReflection="entityReflection" :is-relation="false"/>
         </div>
+    </div>
+    <Relation v-for="relation in relations" :entityReflection="relation"/>
+    <div class="card">
         <div class="card-footer text-muted">
             <div class="row">
                 <div class="col-6">
@@ -41,58 +23,43 @@
 </template>
 
 <script>
-import TextMapping from "./FieldView/TextMapping";
-import TextDescription from "./FieldView/TextDescription";
-import ManytooneMapping from "./FieldView/ManytooneMapping";
-import ManytooneDescription from "./FieldView/ManytooneDescription";
+import EntityField from "./FieldView/EntityField";
 import FileInput from "./FieldView/FileInput";
 import ImportButtons from "./FieldView/ImportButtons";
+import Relation from "./FieldView/Relation";
 import {mapActions} from 'vuex'
-
-const DEFAULT_FIELD_VIEW_TYPE = 'text';
 
 export default {
     props: ['entityReflection', 'importUrl'],
     name: 'DataImport',
     components: {
+        Relation,
         FileInput,
         ImportButtons,
-        TextMapping,
-        TextDescription,
-        ManytooneMapping,
-        ManytooneDescription,
-    },
-    data() {
-        return {
-            componentMapping: {
-                manytoone: {
-                    desc: ManytooneDescription,
-                    mapp: TextMapping // TODO: change to ManytooneMapping
-                },
-                text: {
-                    desc: TextDescription,
-                    mapp: TextMapping
-                }
-            }
-        };
+        EntityField,
     },
     mounted() {
         this.setNamespace(this.entityReflection.namespace);
     },
+    computed: {
+        relations() {
+            return this.getRelations(this.entityReflection)
+        }
+    },
     methods: {
-        getComponent(viewType, type) {
-            if (viewType in this.componentMapping) {
-                return this.componentMapping[viewType][type];
+        getRelations(entityReflection, relation) {
+            let rel = relation ? relation : [];
+
+            for (let name in entityReflection.fields) {
+                let field = entityReflection.fields[name];
+
+                if (field.namespace) {
+                    rel.push(field)
+                    this.getRelations(field, rel)
+                }
             }
 
-            return this.componentMapping[DEFAULT_FIELD_VIEW_TYPE][type];
-        },
-        getComponentProperties(type, field) {
-            if (type === 'desc') {
-                return {'field': field}
-            }
-
-            return {'namespace': this.entityReflection.namespace, 'fieldName': field.name}
+            return rel;
         },
         ...mapActions('dataImport', ['setNamespace'])
     }

@@ -49,8 +49,11 @@ class EntityReflectionService implements EntityReflectionServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function getEntityReflection(string $entityName, bool $isNamespace = false): EntityReflectionInterface
-    {
+    public function getEntityReflection(
+        string $entityName,
+        bool $isNamespace = false,
+        EntityReflectionInterface $parentEntityReflection = null
+    ): EntityReflectionInterface {
         $namespace = $isNamespace ? $entityName : $this->entityFileManager->getEntityNameSpace($entityName);
 
         $reflection = new ReflectionClass($namespace);
@@ -59,24 +62,24 @@ class EntityReflectionService implements EntityReflectionServiceInterface
         $entityReflection = $this->entityFactory->getEntityReflection($namespace);
 
         foreach ($properties as $property) {
-            $entityReflection->addField($this->entityFieldFactory->createEntityField($property));
+            $reflectionField = $this->entityFieldFactory->createEntityField($property);
+            $relationEntityReflection = null;
+
+            if ($reflectionField->isRelation()) {
+                $relationNamespace = $reflectionField->getFieldAnnotation()->targetEntity;
+
+                if (!$parentEntityReflection || $relationNamespace !== $parentEntityReflection->getNamespace()) {
+                    $relationEntityReflection = $this->getEntityReflection($relationNamespace, true, $entityReflection);
+                }
+            }
+
+            $entityReflection->addField(
+                $reflectionField,
+                $relationEntityReflection
+            );
         }
 
         return $entityReflection;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntitiesReflection(array $entities): EntityCollectionInterface
-    {
-        $entityCollection = $this->entityFactory->getEntityCollection();
-
-        foreach ($entities as $entity) {
-            $entityCollection->add($this->getEntityReflection($entity));
-        }
-
-        return $entityCollection;
     }
 
     /**

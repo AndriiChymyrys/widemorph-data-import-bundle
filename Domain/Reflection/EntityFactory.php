@@ -22,14 +22,6 @@ class EntityFactory implements EntityFactoryInterface
     }
 
     /**
-     * @return EntityCollectionInterface
-     */
-    public function getEntityCollection(): EntityCollectionInterface
-    {
-        return new EntityCollection();
-    }
-
-    /**
      * @param string $namespace
      *
      * @return EntityReflectionInterface

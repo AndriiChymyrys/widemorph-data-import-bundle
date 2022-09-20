@@ -6,7 +6,9 @@ namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\
 
 use JsonSerializable;
 use ReflectionProperty;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\Common\Annotations\AnnotationReader;
 
@@ -22,7 +24,7 @@ abstract class AbstractEntityReflectionField implements EntityReflectionFieldInt
      * @param AnnotationReader $annotationReader
      */
     public function __construct(
-        protected readonly  ReflectionProperty $property,
+        protected readonly ReflectionProperty $property,
         protected readonly AnnotationReader $annotationReader
     ) {
     }
@@ -38,23 +40,6 @@ abstract class AbstractEntityReflectionField implements EntityReflectionFieldInt
     /**
      * {@inheritDoc}
      */
-    public function getFieldViewType(): string
-    {
-        $annotation = $this->getFieldAnnotation();
-
-        if (!$annotation) {
-            return static::DEFAULT_FIELD_VIEW_TYPE;
-        }
-
-        return match($annotation::class) {
-            ManyToOne::class, ManyToMany::class => static::FIELD_VIEW_TYPE_MANY_TO_ONE,
-            default => static::DEFAULT_FIELD_VIEW_TYPE
-        };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getFieldAnnotation(): mixed
     {
         $annotations = $this->getAnnotations();
@@ -62,12 +47,28 @@ abstract class AbstractEntityReflectionField implements EntityReflectionFieldInt
         return $annotations[0] ?? null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isRelation(): bool
+    {
+        $annotation = $this->getFieldAnnotation();
+
+        return in_array(
+            $annotation::class,
+            [ManyToOne::class, ManyToMany::class, OneToMany::class, OneToOne::class],
+            true
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function jsonSerialize(): array
     {
         return [
             'name' => $this->getName(),
             'annotation' => $this->getFieldAnnotation(),
-            'viewType' => $this->getFieldViewType(),
         ];
     }
 

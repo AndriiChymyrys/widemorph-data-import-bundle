@@ -14,11 +14,6 @@ use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\Entity
 interface EntityFactoryInterface
 {
     /**
-     * @return EntityCollectionInterface
-     */
-    public function getEntityCollection(): EntityCollectionInterface;
-
-    /**
      * @param string $namespace
      *
      * @return EntityReflectionInterface

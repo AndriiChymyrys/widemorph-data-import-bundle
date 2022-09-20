@@ -21,10 +21,11 @@ interface EntityReflectionInterface
 
     /**
      * @param EntityReflectionFieldInterface $field
+     * @param EntityReflectionInterface|null $entityReflection
      *
      * @return void
      */
-    public function addField(EntityReflectionFieldInterface $field): void;
+    public function addField(EntityReflectionFieldInterface $field, EntityReflectionInterface $entityReflection = null): void;
 
     /**
      * @return EntityReflectionFieldInterface[]
