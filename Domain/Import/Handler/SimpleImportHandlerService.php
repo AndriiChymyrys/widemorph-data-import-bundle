@@ -7,16 +7,30 @@ namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler;
 use Generator;
 use Doctrine\ORM\EntityManagerInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportForm\ImportFormDto;
-use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Exception\ImportHandlerException;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollectionInterface;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodServiceInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\EntityReflectionInterface;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityRelationServiceInterface;
 
+/**
+ * Class SimpleImportHandlerService
+ *
+ * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler
+ */
 class SimpleImportHandlerService implements ImportHandlerInterface
 {
     /**
      * @param EntityManagerInterface $entityManager
+     * @param ImportEntityCollectionInterface $entityCollection
+     * @param ImportEntityRelationServiceInterface $entityRelationService
+     * @param ImportEntityMethodServiceInterface $entityMethodService
      */
-    public function __construct(protected EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected ImportEntityCollectionInterface $entityCollection,
+        protected ImportEntityRelationServiceInterface $entityRelationService,
+        protected ImportEntityMethodServiceInterface $entityMethodService,
+    ) {
     }
 
     public function handle(
@@ -26,46 +40,24 @@ class SimpleImportHandlerService implements ImportHandlerInterface
     ): void {
         foreach ($generator as $row) {
             foreach ($row as $fieldName => $value) {
-                $entity = $this->getEntity($entityDto->getEntity()->getNamespace());
-                $method = $this->getSetMethod($fieldName, $entity);
+                $entity = $this->entityCollection->getEntity($entityDto->getEntity(), $row);
+                $method = $this->entityMethodService->getSetMethodName($fieldName, $entity);
 
-                $entity->{$method}($value);
+                if ($method) {
+                    $entity->{$method}($value);
+                }
+            }
 
-                $this->entityManager->persist($entity);
+            if (isset($row['relations'], $entity)) {
+                $this->entityRelationService->importRelations(
+                    $entity,
+                    $entityReflection,
+                    $entityDto->getEntity()->getRelations(),
+                    $row['relations']
+                );
             }
         }
 
         $this->entityManager->flush();
-    }
-
-    /**
-     * @param string $namespace
-     *
-     * @return object
-     */
-    protected function getEntity(string $namespace): object
-    {
-        return new $namespace();
-    }
-
-    /**
-     * @param string $fieldName
-     * @param object $entity
-     *
-     * @return string
-     *
-     * @throws ImportHandlerException
-     */
-    protected function getSetMethod(string $fieldName, object $entity): string
-    {
-        $method = 'set' . ucfirst($fieldName);
-
-        if (!method_exists($entity, $method)) {
-            throw new ImportHandlerException(
-                sprintf('Method "%s" not found in entity "%s"', $method, get_class($entity))
-            );
-        }
-
-        return $method;
     }
 }

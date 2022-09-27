@@ -63,20 +63,16 @@ class EntityReflectionService implements EntityReflectionServiceInterface
 
         foreach ($properties as $property) {
             $reflectionField = $this->entityFieldFactory->createEntityField($property);
-            $relationEntityReflection = null;
-
             if ($reflectionField->isRelation()) {
                 $relationNamespace = $reflectionField->getFieldAnnotation()->targetEntity;
 
                 if (!$parentEntityReflection || $relationNamespace !== $parentEntityReflection->getNamespace()) {
                     $relationEntityReflection = $this->getEntityReflection($relationNamespace, true, $entityReflection);
+                    $entityReflection->addField($reflectionField, $relationEntityReflection);
                 }
+            } else {
+                $entityReflection->addField($reflectionField);
             }
-
-            $entityReflection->addField(
-                $reflectionField,
-                $relationEntityReflection
-            );
         }
 
         return $entityReflection;

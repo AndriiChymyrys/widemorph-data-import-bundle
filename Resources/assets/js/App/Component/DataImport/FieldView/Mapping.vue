@@ -1,5 +1,27 @@
 <template>
-    <input :name="getInputName()" class="form-control" @input="updateField"/>
+    <div class="form-row align-items-center">
+        <div class="form-group col-auto">
+            <label :for="'mapping' + this.entityReflection.namespace + this.field.name">
+                Field Mapping in Source
+            </label>
+            <input :name="getInputName()" type="text"
+                   :id="'mapping' + this.entityReflection.namespace + this.field.name" class="form-control mb-2"
+                   @input="updateMappingField"/>
+        </div>
+        <div class="form-group col-auto">
+            <div class="form-check mb-2">
+                <input :name="this.entityReflection.namespace"
+                       type="radio"
+                       :id="'mappingId' + this.entityReflection.namespace + this.field.name"
+                       class="form-check-input"
+                       @change="updateIdentifierField"
+                       :value="this.field.name"/>
+                <label :for="'mappingId' + this.entityReflection.namespace + this.field.name">
+                    Use this field as identifier ?
+                </label>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -12,10 +34,25 @@ export default {
         getInputName() {
             return 'entity[' + this.entityReflection.namespace + '][' + this.field.name + ']'
         },
-        updateField(e) {
-            this.updateFieldValue({field: this.field.name, value: e.target.value});
+        updateIdentifierField(e) {
+            this.updateIdField({
+                namespace: this.entityReflection.namespace,
+                isRelation: this.isRelation,
+                value: e.target.value
+            });
         },
-        ...mapActions('dataImport', ['addField', 'addRelation', 'updateFieldValue'])
+        updateMappingField(e) {
+            if (this.isRelation) {
+                this.updateRelationFieldValue({
+                    namespace: this.entityReflection.namespace,
+                    field: this.field.name,
+                    value: e.target.value
+                });
+            } else {
+                this.updateFieldValue({field: this.field.name, value: e.target.value});
+            }
+        },
+        ...mapActions('dataImport', ['addField', 'addRelation', 'updateFieldValue', 'updateRelationFieldValue', 'updateIdField'])
     },
     mounted() {
         if (this.isRelation) {

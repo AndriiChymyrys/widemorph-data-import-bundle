@@ -22,6 +22,16 @@ class EntityImportFormDto
     public array $fields;
 
     /**
+     * @var string
+     */
+    public string $asIdentifierColumn;
+
+    /**
+     * @var array<EntityImportFormDto>
+     */
+    public array $relations = [];
+
+    /**
      * @return string
      */
     public function getNamespace(): string
@@ -35,5 +45,29 @@ class EntityImportFormDto
     public function getFields(): array
     {
         return $this->fields;
+    }
+
+    /**
+     * @param array $fields
+     */
+    public function setFields(array $fields): void
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAsIdentifierColumn(): string
+    {
+        return $this->asIdentifierColumn;
+    }
+
+    /**
+     * @return array<EntityImportFormDto>
+     */
+    public function getRelations(): array
+    {
+        return $this->relations;
     }
 }

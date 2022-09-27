@@ -33,7 +33,7 @@ interface EntityReflectionInterface
     public function getFields(): array;
 
     /**
-     * @return EntityReflectionFieldInterface[]
+     * @return EntityReflectionFieldInterface[]|EntityReflectionInterface[]
      */
     public function getUiFields(): array;
 

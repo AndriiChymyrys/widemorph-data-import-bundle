@@ -15,8 +15,18 @@ export default {
     methods: {
         handleImport() {
             let formData = new FormData();
+            let entity = Object.assign({}, this.getDataImport.entity);
             formData.append('file', this.getDataImport.file)
-            formData.append('entity', JSON.stringify(this.getDataImport.entity))
+
+            let rel = [];
+
+            for (let key in entity.relations) {
+                rel.push(entity.relations[key])
+            }
+
+            entity.relations = rel;
+
+            formData.append('entity', JSON.stringify(entity))
 
             axios.post(this.importUrl, formData)
         }

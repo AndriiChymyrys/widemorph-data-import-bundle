@@ -81,10 +81,40 @@
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerService">
             <argument key="$entityManager" type="service"
                       id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument key="$entityCollection" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollectionInterface"/>
+            <argument key="$entityRelationService" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityRelationServiceInterface"/>
+            <argument key="$entityMethodService" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodServiceInterface"/>
         </service>
         <service
                 id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerServiceInterface"
                 alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\SimpleImportHandlerService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollection">
+            <argument key="$entityManager" type="service"
+                      id="Doctrine\ORM\EntityManagerInterface"/>
+        </service>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollectionInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollection"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityRelationService">
+            <argument key="$entityCollection" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityCollectionInterface"/>
+            <argument key="$entityMethodService" type="service"
+                      id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodServiceInterface"/>
+        </service>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityRelationServiceInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityRelationService"/>
+
+        <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodService">
+        </service>
+        <service
+                id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodServiceInterface"
+                alias="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportEntityMethodService"/>
 
         <service id="WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\ImportErrorCollection" shared="true">
         </service>
