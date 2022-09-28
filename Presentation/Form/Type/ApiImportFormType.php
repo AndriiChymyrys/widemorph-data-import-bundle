@@ -6,18 +6,16 @@ namespace WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportForm\ImportFormDto;
+use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\DTO\ImportForm\ApiImportFormDto;
 
 /**
- * Class ImportFormType
+ * Class ApiImportFormType
  *
  * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Presentation\Form\Type
  */
-class ImportFormType extends AbstractType
+class ApiImportFormType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -25,9 +23,7 @@ class ImportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file', FileType::class, ['constraints' => new NotBlank()])
-            ->add('api', ApiImportFormType::class)
-            ->add('entity', EntityImportFormType::class, ['constraints' => new NotBlank()]);
+            ->add('url', TextType::class);
     }
 
     /**
@@ -36,7 +32,7 @@ class ImportFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ImportFormDto::class,
+            'data_class' => ApiImportFormDto::class,
             'csrf_protection' => false,
         ]);
     }

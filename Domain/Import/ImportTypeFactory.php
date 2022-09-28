@@ -28,7 +28,7 @@ class ImportTypeFactory implements ImportTypeFactoryInterface
      */
     public function getImportType(ImportFormDto $entityDto): ImportTypeServiceInterface
     {
-        return $entityDto->getApiUrl() ?
+        return $entityDto->getApi() ?
             $this->importTypes[static::IMPORT_TYPE_API_NAME] :
             $this->importTypes[static::IMPORT_TYPE_FILE_NAME];
     }

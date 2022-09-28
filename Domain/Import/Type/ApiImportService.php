@@ -9,8 +9,16 @@ use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Reader\SourceRead
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Handler\ImportHandlerInterface;
 use WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Reflection\Entity\EntityReflectionInterface;
 
+/**
+ * Class ApiImportService
+ *
+ * @package WideMorph\Morph\Bundle\MorphDataImportBundle\Domain\Import\Type
+ */
 class ApiImportService extends AbstractImportService
 {
+    /**
+     * {@inheritDoc}
+     */
     public function import(
         ImportFormDto $entityDto,
         EntityReflectionInterface $entityReflection,

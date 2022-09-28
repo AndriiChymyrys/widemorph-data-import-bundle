@@ -19,9 +19,9 @@ class ImportFormDto
     public ?UploadedFile $file;
 
     /**
-     * @var string|null
+     * @var ApiImportFormDto|null
      */
-    public ?string $apiUrl = null;
+    public ?ApiImportFormDto $api = null;
 
     /**
      * @var EntityImportFormDto
@@ -45,10 +45,10 @@ class ImportFormDto
     }
 
     /**
-     * @return string|null
+     * @return ApiImportFormDto|null
      */
-    public function getApiUrl(): ?string
+    public function getApi(): ?ApiImportFormDto
     {
-        return $this->apiUrl;
+        return $this->api;
     }
 }

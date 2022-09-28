@@ -151,6 +151,8 @@ class ExcelSourceReader extends AbstractSourceReader
             }
         }
 
+        $min = $min === 0 ? 1 : $min;
+
         return [$max, $min];
     }
 }

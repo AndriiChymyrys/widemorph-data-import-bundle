@@ -34,6 +34,14 @@ abstract class AbstractImportService implements ImportTypeServiceInterface
     ) {
     }
 
+    /**
+     * @param ImportFormDto $entityDto
+     * @param EntityReflectionInterface $entityReflection
+     * @param SourceReaderInterface $reader
+     * @param ImportHandlerInterface $handler
+     *
+     * @return void
+     */
     abstract public function import(
         ImportFormDto $entityDto,
         EntityReflectionInterface $entityReflection,
@@ -41,6 +49,11 @@ abstract class AbstractImportService implements ImportTypeServiceInterface
         ImportHandlerInterface $handler
     ): void;
 
+    /**
+     * @param ImportFormDto $entityDto
+     *
+     * @return void
+     */
     public function importEntity(ImportFormDto $entityDto): void
     {
         $entityReflection = $this->entityReflectionService->getEntityReflection(
